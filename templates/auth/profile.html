@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}My Profile — TaskFlow{% endblock %}
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 text-center p-4">
+                <img src="{{ user.avatar_url }}" class="rounded-circle mx-auto mb-3" width="100" height="100" alt="Avatar">
+                <h4>{{ user.full_name }}</h4>
+                <p class="text-muted mb-1">{{ user.job_title }}</p>
+                <span class="badge bg-indigo text-white px-3 py-2 rounded-pill mx-auto" style="width: fit-content;">{{ user.role_display }}</span>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0 p-4">
+                <h5 class="fw-bold mb-3">Account Details</h5>
+                <dl class="row mb-0">
+                    <dt class="col-sm-3 text-muted">Email:</dt>
+                    <dd class="col-sm-9">{{ user.email }}</dd>
+                    <dt class="col-sm-3 text-muted">Department:</dt>
+                    <dd class="col-sm-9">{{ user.department }}</dd>
+                    <dt class="col-sm-3 text-muted">Phone:</dt>
+                    <dd class="col-sm-9">{{ user.phone or 'Not set' }}</dd>
+                    <dt class="col-sm-3 text-muted">Bio:</dt>
+                    <dd class="col-sm-9">{{ user.bio or 'No bio provided.' }}</dd>
+                    <dt class="col-sm-3 text-muted">Member Since:</dt>
+                    <dd class="col-sm-9">{{ user.created_at[:10] }}</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
