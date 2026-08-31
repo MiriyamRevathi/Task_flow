@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}{{ team.name }} — TaskFlow{% endblock %}
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="card shadow-sm border-0 p-4 mb-4">
+        <span class="badge bg-indigo text-white mb-2" style="width: fit-content;">{{ team.department }}</span>
+        <h2 class="fw-bold mb-1">{{ team.name }}</h2>
+        <p class="text-muted mb-0">{{ team.description }}</p>
+    </div>
+
+    <div class="card shadow-sm border-0 p-4">
+        <h5 class="fw-bold mb-4">Team Workload Distribution</h5>
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th>Member</th>
+                        <th>Job Title</th>
+                        <th>Active Tasks</th>
+                        <th>Completed</th>
+                        <th>Overdue</th>
+                        <th>Estimated Hours</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for m in metrics.members_workload %}
+                    <tr>
+                        <td>
+                            <img src="{{ m.avatar_url }}" width="32" height="32" class="rounded-circle me-2">
+                            <strong>{{ m.member_name }}</strong>
+                        </td>
+                        <td>{{ m.job_title }}</td>
+                        <td><span class="badge bg-primary fs-6">{{ m.active_task_count }}</span></td>
+                        <td><span class="badge bg-success fs-6">{{ m.done_task_count }}</span></td>
+                        <td><span class="badge bg-{{ 'danger' if m.overdue_task_count > 0 else 'secondary' }} fs-6">{{ m.overdue_task_count }}</span></td>
+                        <td>{{ m.total_estimated_hours }}h</td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="6" class="text-center text-muted">No member workload data.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
