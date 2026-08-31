@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Projects — TaskFlow{% endblock %}
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold">Workspace Projects</h3>
+        <a href="{{ url_for('project.create') }}" class="btn btn-primary" style="background: #4f46e5;"><i class="bi bi-plus-lg"></i> New Project</a>
+    </div>
+
+    <div class="row g-4">
+        {% for proj in projects %}
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100 p-3">
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="badge bg-indigo-subtle text-indigo font-monospace">{{ proj.key }}</span>
+                    <span class="badge bg-{{ 'success' if proj.status == 'ACTIVE' else 'secondary' }}">{{ proj.status }}</span>
+                </div>
+                <h5 class="fw-bold"><a href="{{ url_for('project.detail', project_id=proj.id) }}" class="text-decoration-none text-dark">{{ proj.name }}</a></h5>
+                <p class="text-muted small text-truncate-2 mb-3">{{ proj.description or 'No description provided.' }}</p>
+                <div class="mt-auto">
+                    <div class="d-flex justify-content-between small text-muted mb-1">
+                        <span>Progress</span>
+                        <span>{{ proj.progress_percentage }}%</span>
+                    </div>
+                    <div class="progress mb-2" style="height: 6px;">
+                        <div class="progress-bar bg-indigo" style="width: {{ proj.progress_percentage }}%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12 text-center py-5 text-muted">
+            <p>No projects found in this workspace.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

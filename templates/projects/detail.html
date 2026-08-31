@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}{{ project.name }} — TaskFlow{% endblock %}
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="card shadow-sm border-0 p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-start">
+            <div>
+                <span class="badge bg-indigo font-monospace mb-2">{{ project.key }}</span>
+                <h2 class="fw-bold mb-1">{{ project.name }}</h2>
+                <p class="text-muted">{{ project.description }}</p>
+            </div>
+            <span class="badge bg-{{ 'success' if project.status == 'ACTIVE' else 'secondary' }} fs-6">{{ project.status }}</span>
+        </div>
+
+        <div class="row mt-3 text-center border-top pt-3">
+            <div class="col-md-3">
+                <div class="text-muted small">Progress</div>
+                <div class="fs-4 fw-bold text-indigo">{{ project.progress_percentage }}%</div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-muted small">Risk Level</div>
+                <div class="fs-4 fw-bold text-{{ 'danger' if project.risk_level == 'HIGH_RISK' else 'success' }}">{{ project.risk_level }}</div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-muted small">Health Score</div>
+                <div class="fs-4 fw-bold text-success">{{ project.health_score }}/100</div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-muted small">Budget</div>
+                <div class="fs-4 fw-bold">${{ "{:,.2f}".format(project.budget) }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0 p-4">
+                <h5 class="fw-bold mb-3">Project Tasks ({{ tasks|length }})</h5>
+                <ul class="list-group list-group-flush">
+                    {% for task in tasks %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <a href="{{ url_for('task.detail', task_id=task.id) }}" class="fw-semibold text-dark text-decoration-none">{{ task.title }}</a>
+                        </div>
+                        <span class="badge bg-{{ 'success' if task.status == 'DONE' else 'primary' }}">{{ task.status }}</span>
+                    </li>
+                    {% else %}
+                    <li class="list-group-item text-muted">No tasks in this project yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 p-4">
+                <h5 class="fw-bold mb-3">Milestones</h5>
+                {% for ms in milestones %}
+                <div class="mb-3">
+                    <div class="fw-semibold">{{ ms.title }}</div>
+                    <div class="progress mt-1" style="height: 4px;">
+                        <div class="progress-bar bg-success" style="width: {{ ms.completion_percentage }}%;"></div>
+                    </div>
+                </div>
+                {% else %}
+                <p class="text-muted small">No milestones defined.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
