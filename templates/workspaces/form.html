@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Create Workspace — TaskFlow{% endblock %}
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 p-4">
+                <h4 class="fw-bold mb-3">Create New Workspace</h4>
+                <form method="POST" action="{{ url_for('workspace.create') }}">
+                    <div class="mb-3">
+                        <label class="form-label">Workspace Name</label>
+                        <input type="text" class="form-control" name="name" required placeholder="e.g. Mobile Development">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" name="description" rows="3" placeholder="Describe the workspace purpose..."></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Theme Color</label>
+                        <input type="color" class="form-control form-control-color" name="color_theme" value="#6366f1">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100" style="background: #4f46e5;">Create Workspace</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
