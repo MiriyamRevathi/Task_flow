@@ -3,7 +3,7 @@ Organization Service.
 Manages enterprise organization settings, member limits, and multi-tenant billing simulation.
 """
 
-from typing import Optional, Dict, Any, List
+from typing import Optional, Dict, Any, List, Tuple
 from taskflow.repositories.organization_repository import OrganizationRepository
 from taskflow.models.organization import Organization
 from taskflow.utils.string_utils import slugify

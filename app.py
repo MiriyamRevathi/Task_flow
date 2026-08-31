@@ -3,6 +3,10 @@ TaskFlow Enterprise Project Management SaaS.
 Main application factory & entry point.
 """
 
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
 from flask import Flask, g
 from taskflow.config import config_by_name, Config
 from taskflow.storage.file_storage import FileStorageEngine
