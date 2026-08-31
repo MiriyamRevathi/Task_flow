@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Workspace Settings — TaskFlow{% endblock %}
+{% block content %}
+<div class="container py-4">
+    <h3 class="fw-bold mb-4">Workspace Settings</h3>
+    <div class="card shadow-sm border-0 p-4 mb-4">
+        <h5 class="fw-semibold">{{ workspace.name }}</h5>
+        <p class="text-muted">{{ workspace.description }}</p>
+        <span class="badge bg-secondary mb-3">ID: {{ workspace.id }}</span>
+    </div>
+</div>
+{% endblock %}
