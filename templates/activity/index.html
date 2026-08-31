@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Activity Audit Log — TaskFlow{% endblock %}
+{% block content %}
+<div class="container-fluid py-4">
+    <h3 class="fw-bold mb-4">Activity & Audit Timeline</h3>
+
+    <div class="card shadow-sm border-0 p-4">
+        <div class="timeline">
+            {% for act in activities %}
+            <div class="border-bottom py-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <strong class="text-indigo">{{ act.actor_name }}</strong>
+                    <small class="text-muted">{{ act.created_at[:19].replace('T', ' ') }}</small>
+                </div>
+                <p class="mb-0 text-dark">{{ act.description }}</p>
+                <span class="badge bg-secondary font-monospace mt-1">{{ act.action }}</span>
+            </div>
+            {% else %}
+            <p class="text-muted text-center py-4">No audit log records found.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
