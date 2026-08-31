@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Time Tracking — TaskFlow{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/timer.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <h3 class="fw-bold mb-4">Time Tracking & Timesheets</h3>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="timer-card shadow-sm">
+                <h5 class="fw-semibold mb-2">Live Work Timer</h5>
+                {% if timesheet.running_timer %}
+                <div class="timer-display my-2" id="live-timer-display" data-start-time="{{ timesheet.running_timer.start_time }}">00:00:00</div>
+                <p class="mb-3">{{ timesheet.running_timer.description }}</p>
+                <form method="POST" action="{{ url_for('time.stop') }}">
+                    <button type="submit" class="btn btn-danger btn-lg px-4"><i class="bi bi-stop-circle"></i> Stop Timer</button>
+                </form>
+                {% else %}
+                <p class="text-white-50">Select a task to start tracking work hours in real-time.</p>
+                <form method="POST" action="{{ url_for('time.start') }}">
+                    <div class="mb-3">
+                        <select name="task_id" class="form-select" required>
+                            <option value="">Select Task...</option>
+                            {% for t in tasks %}
+                            <option value="{{ t.id }}">{{ t.title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-light text-indigo fw-bold px-4"><i class="bi bi-play-circle"></i> Start Timer</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 p-4 h-100">
+                <h5 class="fw-bold mb-3">Timesheet Summary</h5>
+                <div class="row text-center mt-3">
+                    <div class="col-6">
+                        <div class="text-muted small">Total Logged Hours</div>
+                        <div class="fs-2 fw-bold text-indigo">{{ timesheet.total_hours }}h</div>
+                    </div>
+                    <div class="col-6">
+                        <div class="text-muted small">Billable Hours</div>
+                        <div class="fs-2 fw-bold text-success">{{ timesheet.billable_hours }}h</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Description</th>
+                        <th>Hours</th>
+                        <th>Billable</th>
+                        <th>Date Logged</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in timesheet.entries %}
+                    <tr>
+                        <td>{{ entry.description }}</td>
+                        <td><strong>{{ entry.hours }}h</strong></td>
+                        <td><span class="badge bg-{{ 'success' if entry.is_billable else 'secondary' }}">{{ 'Yes' if entry.is_billable else 'No' }}</span></td>
+                        <td>{{ entry.created_at[:10] }}</td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="4" class="text-center py-4 text-muted">No time entries logged yet.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/timer.js') }}"></script>
+{% endblock %}
