@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}{{ task.title }} — TaskFlow{% endblock %}
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0 p-4 mb-4">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <h3 class="fw-bold mb-0">{{ task.title }}</h3>
+                    <form method="POST" action="{{ url_for('task.update_status', task_id=task.id) }}" class="d-inline">
+                        <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                            {% for st in ['BACKLOG', 'TODO', 'IN_PROGRESS', 'IN_REVIEW', 'BLOCKED', 'DONE'] %}
+                            <option value="{{ st }}" {{ 'selected' if task.status == st }}>{{ st }}</option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                </div>
+                <p class="text-muted">{{ task.description or 'No description provided.' }}</p>
+                
+                <h5 class="fw-bold mt-4 mb-3">Comments</h5>
+                {% for cmt in task.comments %}
+                <div class="border-bottom py-2">
+                    <div class="d-flex justify-content-between">
+                        <strong>{{ cmt.author_name }}</strong>
+                        <small class="text-muted">{{ cmt.created_at[:10] }}</small>
+                    </div>
+                    <p class="mb-0 text-secondary">{{ cmt.content }}</p>
+                </div>
+                {% else %}
+                <p class="text-muted small">No comments yet.</p>
+                {% endfor %}
+
+                <form method="POST" action="{{ url_for('task.add_comment', task_id=task.id) }}" class="mt-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="content" placeholder="Add a comment..." required>
+                        <button class="btn btn-primary" type="submit" style="background: #4f46e5;">Post</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 p-4">
+                <h5 class="fw-bold mb-3">Task Info</h5>
+                <dl class="row mb-0">
+                    <dt class="col-sm-4 text-muted">Project:</dt>
+                    <dd class="col-sm-8">{{ project.name if project else 'N/A' }}</dd>
+                    <dt class="col-sm-4 text-muted">Assignee:</dt>
+                    <dd class="col-sm-8">{{ assignee.full_name if assignee else 'Unassigned' }}</dd>
+                    <dt class="col-sm-4 text-muted">Priority:</dt>
+                    <dd class="col-sm-8">{{ task.priority }}</dd>
+                    <dt class="col-sm-4 text-muted">Due Date:</dt>
+                    <dd class="col-sm-8">{{ task.due_date or 'N/A' }}</dd>
+                    <dt class="col-sm-4 text-muted">Est. Hours:</dt>
+                    <dd class="col-sm-8">{{ task.estimated_hours }}h</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

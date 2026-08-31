@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Tasks — TaskFlow{% endblock %}
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold">Tasks</h3>
+        <a href="{{ url_for('task.create') }}" class="btn btn-primary" style="background: #4f46e5;"><i class="bi bi-plus-lg"></i> New Task</a>
+    </div>
+
+    <div class="card shadow-sm border-0 p-3 mb-4">
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="{{ url_for('task.list_tasks') }}" class="btn btn-sm btn-outline-secondary {{ 'active' if not current_status }}">All Statuses</a>
+            <a href="{{ url_for('task.list_tasks', status='TODO') }}" class="btn btn-sm btn-outline-primary {{ 'active' if current_status == 'TODO' }}">To Do</a>
+            <a href="{{ url_for('task.list_tasks', status='IN_PROGRESS') }}" class="btn btn-sm btn-outline-warning {{ 'active' if current_status == 'IN_PROGRESS' }}">In Progress</a>
+            <a href="{{ url_for('task.list_tasks', status='BLOCKED') }}" class="btn btn-sm btn-outline-danger {{ 'active' if current_status == 'BLOCKED' }}">Blocked</a>
+            <a href="{{ url_for('task.list_tasks', status='DONE') }}" class="btn btn-sm btn-outline-success {{ 'active' if current_status == 'DONE' }}">Done</a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th>Priority</th>
+                        <th>Due Date</th>
+                        <th>Est. Hours</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                    <tr>
+                        <td>
+                            <a href="{{ url_for('task.detail', task_id=task.id) }}" class="fw-semibold text-dark text-decoration-none">{{ task.title }}</a>
+                        </td>
+                        <td><span class="badge bg-{{ 'success' if task.status == 'DONE' else 'primary' }}">{{ task.status }}</span></td>
+                        <td><span class="badge bg-outline-secondary">{{ task.priority }}</span></td>
+                        <td>{{ task.due_date or 'No due date' }}</td>
+                        <td>{{ task.estimated_hours }}h</td>
+                        <td>
+                            <a href="{{ url_for('task.detail', task_id=task.id) }}" class="btn btn-sm btn-outline-primary">View</a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="6" class="text-center py-4 text-muted">No tasks found.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
