@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Admin Panel — TaskFlow{% endblock %}
+{% block content %}
+<div class="container-fluid py-4">
+    <h3 class="fw-bold mb-4">Administration Dashboard</h3>
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 p-4">
+                <div class="text-muted small">TOTAL SYSTEM USERS</div>
+                <div class="fs-2 fw-bold text-indigo">{{ diagnostics.total_users }}</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 p-4">
+                <div class="text-muted small">ORGANIZATIONS</div>
+                <div class="fs-2 fw-bold text-success">{{ diagnostics.total_organizations }}</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 p-4">
+                <div class="text-muted small">WORKSPACES</div>
+                <div class="fs-2 fw-bold text-primary">{{ diagnostics.total_workspaces }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

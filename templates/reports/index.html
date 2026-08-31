@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Reports — TaskFlow{% endblock %}
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold">Executive Reports & Data Export</h3>
+        <a href="{{ url_for('report.export_csv') }}" class="btn btn-success"><i class="bi bi-file-earmark-spreadsheet"></i> Export CSV</a>
+    </div>
+
+    <div class="card shadow-sm border-0 p-4">
+        <h5 class="fw-bold mb-3">{{ report.report_title }}</h5>
+        <dl class="row">
+            <dt class="col-sm-3 text-muted">Total Projects:</dt>
+            <dd class="col-sm-9 fw-bold">{{ report.total_projects }}</dd>
+            <dt class="col-sm-3 text-muted">Total Tasks:</dt>
+            <dd class="col-sm-9 fw-bold">{{ report.total_tasks }}</dd>
+            <dt class="col-sm-3 text-muted">Total Team Members:</dt>
+            <dd class="col-sm-9 fw-bold">{{ report.total_team_members }}</dd>
+            <dt class="col-sm-3 text-muted">Total Logged Hours:</dt>
+            <dd class="col-sm-9 fw-bold">{{ report.total_hours_logged }}h</dd>
+        </dl>
+    </div>
+</div>
+{% endblock %}
