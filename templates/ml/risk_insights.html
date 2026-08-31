@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}ML Risk Insights — TaskFlow{% endblock %}
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">🤖 scikit-learn ML Project Risk Insights</h3>
+            <p class="text-muted small mb-0">Local Machine Learning prediction engine analyzing project failure risk.</p>
+        </div>
+        <span class="badge bg-indigo fs-6">Algorithm: {{ diagnostics.algorithm }} (Accuracy: {{ diagnostics.metrics.accuracy * 100 }}%)</span>
+    </div>
+
+    <div class="row g-4">
+        {% for ins in insights %}
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 p-4">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h5 class="fw-bold mb-0">{{ ins.project_name }}</h5>
+                    <span class="badge bg-{{ 'danger' if ins.risk_level == 'HIGH_RISK' else ('warning' if ins.risk_level == 'MEDIUM_RISK' else 'success') }} fs-6">{{ ins.risk_level }}</span>
+                </div>
+                <div class="fs-3 fw-bold text-indigo mb-3">Risk Score: {{ ins.risk_score }} / 100</div>
+                <h6 class="fw-bold text-muted small">RECOMMENDATIONS:</h6>
+                <ul>
+                    {% for rec in ins.recommendations %}
+                    <li class="text-secondary small">{{ rec }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12 text-center text-muted py-5">No ML risk insights generated yet.</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

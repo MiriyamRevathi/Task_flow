@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "taskflow"
+version = "2.0.0"
+description = "Enterprise Project Management SaaS Platform"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "Flask>=2.3.0",
+    "Werkzeug>=2.3.0",
+    "Jinja2>=3.1.2",
+    "pandas>=2.0.0",
+    "numpy>=1.24.0",
+    "scikit-learn>=1.2.0",
+    "matplotlib>=3.7.0",
+]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q"
+testpaths = ["tests"]
