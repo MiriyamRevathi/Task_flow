@@ -1,6 +1,6 @@
 """
-Notification Domain Model.
-Represents user notifications for assignments, status changes, mentions, and system alerts.
+TaskFlow Enterprise SaaS - Notification Domain Model.
+Represents system alerts, task assignments, deadline warnings, status changes, and user notifications.
 """
 
 from datetime import datetime, timezone
@@ -9,31 +9,46 @@ from taskflow.models.enums import NotificationType
 
 
 class Notification:
+    """Notification domain entity representing user system alerts."""
+
     def __init__(
         self,
         id: str,
         user_id: str,
         title: str,
         message: str,
-        type: str = NotificationType.SYSTEM_ALERT.value,
-        read: bool = False,
-        link_url: str = "",
-        project_id: Optional[str] = None,
-        task_id: Optional[str] = None,
+        notification_type: str = NotificationType.SYSTEM_ALERT.value,
+        target_url: str = "",
         actor_id: Optional[str] = None,
+        actor_name: str = "",
+        is_read: bool = False,
+        read_at: Optional[str] = None,
         created_at: Optional[str] = None,
     ):
-        self.id = id
-        self.user_id = user_id
-        self.title = title.strip()
-        self.message = message.strip()
-        self.type = type if type in NotificationType.choices() else NotificationType.SYSTEM_ALERT.value
-        self.read = read
-        self.link_url = link_url
-        self.project_id = project_id
-        self.task_id = task_id
+        self.id = str(id).strip()
+        self.user_id = str(user_id).strip()
+        self.title = str(title).strip()
+        self.message = str(message).strip()
+        self.notification_type = (
+            notification_type
+            if notification_type in NotificationType.choices()
+            else NotificationType.SYSTEM_ALERT.value
+        )
+        self.target_url = str(target_url).strip()
         self.actor_id = actor_id
-        self.created_at = created_at or datetime.now(timezone.utc).isoformat()
+        self.actor_name = str(actor_name).strip()
+        self.is_read = bool(is_read)
+        self.read_at = read_at
+        now_iso = datetime.now(timezone.utc).isoformat()
+        self.created_at = created_at or now_iso
+
+    def mark_as_read(self):
+        self.is_read = True
+        self.read_at = datetime.now(timezone.utc).isoformat()
+
+    def mark_as_unread(self):
+        self.is_read = False
+        self.read_at = None
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -41,12 +56,12 @@ class Notification:
             "user_id": self.user_id,
             "title": self.title,
             "message": self.message,
-            "type": self.type,
-            "read": self.read,
-            "link_url": self.link_url,
-            "project_id": self.project_id,
-            "task_id": self.task_id,
+            "notification_type": self.notification_type,
+            "target_url": self.target_url,
             "actor_id": self.actor_id,
+            "actor_name": self.actor_name,
+            "is_read": self.is_read,
+            "read_at": self.read_at,
             "created_at": self.created_at,
         }
 
@@ -57,11 +72,21 @@ class Notification:
             user_id=data["user_id"],
             title=data["title"],
             message=data["message"],
-            type=data.get("type", NotificationType.SYSTEM_ALERT.value),
-            read=data.get("read", False),
-            link_url=data.get("link_url", ""),
-            project_id=data.get("project_id"),
-            task_id=data.get("task_id"),
+            notification_type=data.get(
+                "notification_type", NotificationType.SYSTEM_ALERT.value
+            ),
+            target_url=data.get("target_url", ""),
             actor_id=data.get("actor_id"),
+            actor_name=data.get("actor_name", ""),
+            is_read=data.get("is_read", False),
+            read_at=data.get("read_at"),
             created_at=data.get("created_at"),
         )
+
+    def __repr__(self) -> str:
+        return f"<Notification {self.id}: {self.title} (read={self.is_read})>"
+
+    def __eq__(self, other: Any) -> bool:
+        if not isinstance(other, Notification):
+            return False
+        return self.id == other.id
