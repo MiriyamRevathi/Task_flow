@@ -224,3 +224,11 @@ class User:
             settings=data.get("settings"),
             permissions=data.get("permissions"),
         )
+
+    def __repr__(self) -> str:
+        return f"<User {self.id}: {self.email} ({self.role})>"
+
+    def __eq__(self, other: Any) -> bool:
+        if not isinstance(other, User):
+            return False
+        return self.id == other.id
