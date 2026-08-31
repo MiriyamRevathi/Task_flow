@@ -191,4 +191,5 @@ def create_app(config_name: str = "default") -> Flask:
 app = create_app("development")
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=5000, debug=True)
+    port = int(os.environ.get("PORT", 5004))
+    app.run(host="127.0.0.1", port=port, debug=True)
