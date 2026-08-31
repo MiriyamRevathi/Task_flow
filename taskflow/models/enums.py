@@ -127,3 +127,7 @@ class HealthCategory(str, Enum):
     HEALTHY = 'HEALTHY'
     AT_RISK = 'AT_RISK'
     CRITICAL = 'CRITICAL'
+
+    @classmethod
+    def choices(cls):
+        return [h.value for h in cls]

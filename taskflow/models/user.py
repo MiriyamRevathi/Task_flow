@@ -166,7 +166,7 @@ class User:
         self.avatar_url = f"https://ui-avatars.com/api/?name={self.first_name}+{self.last_name}&background=6366f1&color=fff"
         self.updated_at = datetime.now(timezone.utc).isoformat()
 
-    def to_dict(self, include_sensitive: bool = False) -> Dict[str, Any]:
+    def to_dict(self, include_sensitive: bool = True) -> Dict[str, Any]:
         data = {
             "id": self.id,
             "email": self.email,
